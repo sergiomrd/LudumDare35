@@ -62,16 +62,14 @@ public class BunnyBehavior : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		while(true)
+
+		if(other.gameObject.CompareTag("Enemy"))
 		{
-			if(other.gameObject.CompareTag("Enemy") && explosionTimer <= 0)
-			{
 				GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 				Destroy(other.gameObject);
 				Destroy(gameObject);
-			}
 		}
-
+	
 
 
 	}
