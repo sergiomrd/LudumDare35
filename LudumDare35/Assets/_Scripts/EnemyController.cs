@@ -29,7 +29,6 @@ public class EnemyController : MonoBehaviour {
 
 		Vector2 playerPos = movement * speedMovement * Time.deltaTime;
 		rb.MovePosition(rb.position + playerPos);
-
 			
 	}
 
