@@ -4,25 +4,30 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float speedMovement = 1f;
-	public GameObject hat, face, primaryBullet, secondaryBullet;
+	public GameObject hat, face;
 	public float jumpPower = 150f;
-	public float speedBullet = 10f;
 
+
+	private PrimaryWeapon primaryWeapon;
+	private SecondaryWeapon secondaryWeapon;
 	private Rigidbody2D rb;
 	private bool isFacingLeft;
 	private SpriteRenderer spriteRender;
 	private bool isJumping;
 	private bool doubleJump;
-	private float minDistanceShooting;
+	private Animator animator;
 
 	void Start () {
 
 		rb = GetComponent<Rigidbody2D>();
 		spriteRender = GetComponent<SpriteRenderer>();
+		primaryWeapon = GetComponent<PrimaryWeapon>();
+		secondaryWeapon = GetComponent<SecondaryWeapon>();
 		isFacingLeft = false;
 		isJumping = false;
 		doubleJump = false;
-		minDistanceShooting = 0.3f;
+
+		animator = hat.GetComponent<Animator>();
 	}
 
 
@@ -104,36 +109,22 @@ public class PlayerController : MonoBehaviour {
 		shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
 		shootDirection = shootDirection - transform.position;
 
-		GameObject bulletInstance = Instantiate(primaryBullet, face.transform.position, Quaternion.identity) as GameObject;
-		bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x * speedBullet, shootDirection.y * speedBullet);
+		primaryWeapon.Fire(face.transform.position, shootDirection);
+
 
 	}
 
 	public void FireHat()
 	{
+
 		Vector3 shootDirection;
 		shootDirection = Input.mousePosition;
 		shootDirection.z = 0f;
 		shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
 		shootDirection = shootDirection - transform.position;
 
-		if(shootDirection.x > 0)
-		{
-			secondaryBullet.GetComponent<SpriteRenderer>().flipX = false;
-			minDistanceShooting = Mathf.Abs(minDistanceShooting);
-		}
-		else if (shootDirection.x < 0)
-		{
-			secondaryBullet.GetComponent<SpriteRenderer>().flipX = true;
-			if(minDistanceShooting > 0)
-			{
-				minDistanceShooting = -minDistanceShooting;
-			}
+		secondaryWeapon.Fire(hat.transform.position, shootDirection);
 
-		}
-			
-		GameObject bulletInstance = Instantiate(secondaryBullet, new Vector3((hat.transform.position.x + minDistanceShooting), hat.transform.position.y, hat.transform.position.z), Quaternion.identity) as GameObject;
-		bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2((shootDirection.x + 0.1f) * speedBullet, shootDirection.y * speedBullet);
 	}
 
 	void OnCollisionEnter2D(Collision2D col)

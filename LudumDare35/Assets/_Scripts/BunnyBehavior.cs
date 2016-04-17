@@ -35,6 +35,7 @@ public class BunnyBehavior : MonoBehaviour {
 			if(explosionTimer <= 0)
 			{
 				BunnyExplode();
+
 			}
 		}
 
@@ -70,8 +71,6 @@ public class BunnyBehavior : MonoBehaviour {
 				Destroy(gameObject);
 		}
 	
-
-
 	}
 
 	void StartTimerExplosion()
@@ -85,4 +84,5 @@ public class BunnyBehavior : MonoBehaviour {
 		GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 		Destroy(gameObject);
 	}
+		
 }
