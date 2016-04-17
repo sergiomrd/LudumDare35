@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class PrimaryWeapon : MonoBehaviour {
 
 	public enum NormalWeapons  {
-		Moustache
+		Moustache,
+		Arms
 	}
 
 	public NormalWeapons currentWeapon;
@@ -46,6 +47,12 @@ public class PrimaryWeapon : MonoBehaviour {
 			fireRate = 0.5f;
 			initialFireRate = fireRate;
 			break;
+		case NormalWeapons.Arms:
+			primaryBullet = _ammolist[1];
+			speedBullet = 1f;
+			fireRate = 0f;
+			initialFireRate = fireRate;
+			break;
 
 		}
 	}
@@ -59,5 +66,29 @@ public class PrimaryWeapon : MonoBehaviour {
 			bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x * speedBullet, shootDirection.y * speedBullet);
 		}
 
+	}
+
+	public void Smash(Vector3 facePos, bool isFacingLeft)
+	{
+		if(canShoot)
+		{
+			canShoot = false;
+			setSmashDirection(isFacingLeft);
+			GameObject bulletInstance = Instantiate(primaryBullet, facePos, Quaternion.identity) as GameObject;
+			bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(((isFacingLeft) ? Vector2.left.x : Vector2.right.x) * speedBullet, 0);
+		}
+	}
+
+	void setSmashDirection(bool isFacinLeft)
+	{
+		if(isFacinLeft)
+		{
+			primaryBullet.GetComponent<SpriteRenderer>().flipX = true;
+		}
+
+		else
+		{
+			primaryBullet.GetComponent<SpriteRenderer>().flipX = false;
+		}
 	}
 }

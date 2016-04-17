@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	private SpriteRenderer spriteRender;
 	private bool isJumping;
 	private bool doubleJump;
-	private Animator animator;
+	private Animator faceAnimator;
 
 	void Start () {
 
@@ -26,8 +26,7 @@ public class PlayerController : MonoBehaviour {
 		isFacingLeft = false;
 		isJumping = false;
 		doubleJump = false;
-
-		animator = hat.GetComponent<Animator>();
+		faceAnimator = face.GetComponent<Animator>();
 	}
 
 
@@ -109,7 +108,17 @@ public class PlayerController : MonoBehaviour {
 		shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
 		shootDirection = shootDirection - transform.position;
 
-		primaryWeapon.Fire(face.transform.position, shootDirection);
+		if(primaryWeapon.currentWeapon != PrimaryWeapon.NormalWeapons.Arms)
+		{
+			primaryWeapon.Fire(face.transform.position, shootDirection);
+		}
+		else
+		{
+			primaryWeapon.Smash(face.transform.position, isFacingLeft);
+			faceAnimator.SetTrigger("smash");
+
+		}
+
 
 
 	}
