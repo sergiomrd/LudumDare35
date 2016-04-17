@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour {
 
 		rb = GetComponent<Rigidbody2D>();
 		spriteRender = GetComponent<SpriteRenderer>();
-		primaryWeapon = GetComponent<PrimaryWeapon>();
-		secondaryWeapon = GetComponent<SecondaryWeapon>();
+		primaryWeapon = face.GetComponent<PrimaryWeapon>();
+		secondaryWeapon = hat.GetComponent<SecondaryWeapon>();
 		isFacingLeft = false;
 		isJumping = false;
 		doubleJump = false;

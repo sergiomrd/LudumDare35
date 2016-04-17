@@ -1,27 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PrimaryWeapon : MonoBehaviour {
 
-	public enum NormalWeapons  {
+	public enum NormalWeapons {
+		None,
 		Moustache,
 		Arms
+
 	}
 
 	public NormalWeapons currentWeapon;
 	private GameObject primaryBullet;
+	private SpriteRenderer spriteRender;
 	private float speedBullet;
 	private bool canShoot;
+	private int randomNumber;
 	private float fireRate, initialFireRate;
 
 	[SerializeField]
 	private List<GameObject> _ammolist = new List<GameObject>();
+	private List<NormalWeapons> normalWeaponList = System.Enum.GetValues(typeof(NormalWeapons)).Cast<NormalWeapons>().ToList();
+
+	[SerializeField]
+	private List<Sprite> normalWeaponSprites;
+
+	public List<NormalWeapons> NormalWeaponList {
+		get {
+			return normalWeaponList;
+		}
+	}
 
 	void Start()
 	{
-		CurrentWeapon(currentWeapon);
+		spriteRender = GetComponent<SpriteRenderer>();
+		CurrentWeapon(NormalWeapons.Moustache);
 		canShoot = true;
+
 	}
 
 	void Update () {
@@ -42,24 +59,32 @@ public class PrimaryWeapon : MonoBehaviour {
 		switch(current)
 		{
 		case NormalWeapons.Moustache:
+			gameObject.SetActive(true);
 			primaryBullet = _ammolist[0];
+			spriteRender.sprite = normalWeaponSprites[0];
 			speedBullet = 1f;
 			fireRate = 0.5f;
 			initialFireRate = fireRate;
 			break;
 		case NormalWeapons.Arms:
+			gameObject.SetActive(true);
 			primaryBullet = _ammolist[1];
+			Debug.Log(spriteRender.sprite);
+			Debug.Log(normalWeaponSprites[1]);
+			spriteRender.sprite = normalWeaponSprites[1];
 			speedBullet = 1f;
 			fireRate = 0f;
 			initialFireRate = fireRate;
 			break;
-
+		case NormalWeapons.None:
+			gameObject.SetActive(false);
+			break;
 		}
 	}
 
 	public void Fire(Vector3 facePos, Vector2 shootDirection)
 	{
-		if(canShoot)
+		if(canShoot && currentWeapon != NormalWeapons.None)
 		{
 			canShoot = false;
 			GameObject bulletInstance = Instantiate(primaryBullet, facePos, Quaternion.identity) as GameObject;
@@ -70,7 +95,7 @@ public class PrimaryWeapon : MonoBehaviour {
 
 	public void Smash(Vector3 facePos, bool isFacingLeft)
 	{
-		if(canShoot)
+		if(canShoot && currentWeapon != NormalWeapons.None)
 		{
 			canShoot = false;
 			setSmashDirection(isFacingLeft);

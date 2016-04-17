@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class SecondaryWeapon : MonoBehaviour {
 
 	public enum SpecialWeapons  {
-		Bunny
+		Bunny,
+		None
 	}
 
 	public SpecialWeapons currentWeapon;
@@ -33,6 +34,9 @@ public class SecondaryWeapon : MonoBehaviour {
 			speedBullet = 1f;
 			fireRate = 5f;
 			initialFireRate = fireRate;
+			break;
+		case SpecialWeapons.None:
+			gameObject.SetActive(false);
 			break;
 
 		}
