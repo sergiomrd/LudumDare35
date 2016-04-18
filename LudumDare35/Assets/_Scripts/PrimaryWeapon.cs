@@ -14,11 +14,13 @@ public class PrimaryWeapon : MonoBehaviour {
 
 	public NormalWeapons currentWeapon;
 	private GameObject primaryBullet;
+	public GameObject decorative;
 	private SpriteRenderer spriteRender;
 	private float speedBullet;
 	private bool canShoot;
 	private int randomNumber;
 	private float fireRate, initialFireRate;
+	private Animator animator;
 
 	[SerializeField]
 	private List<GameObject> _ammolist = new List<GameObject>();
@@ -36,7 +38,8 @@ public class PrimaryWeapon : MonoBehaviour {
 	void Start()
 	{
 		spriteRender = GetComponent<SpriteRenderer>();
-		CurrentWeapon(NormalWeapons.Moustache);
+		animator = GetComponent<Animator>();
+		CurrentWeapon(NormalWeapons.None);
 		canShoot = true;
 
 	}
@@ -60,6 +63,8 @@ public class PrimaryWeapon : MonoBehaviour {
 		{
 		case NormalWeapons.Moustache:
 			gameObject.SetActive(true);
+			decorative.SetActive(false);
+			animator.enabled = false;
 			primaryBullet = _ammolist[0];
 			spriteRender.sprite = normalWeaponSprites[0];
 			speedBullet = 1f;
@@ -68,9 +73,9 @@ public class PrimaryWeapon : MonoBehaviour {
 			break;
 		case NormalWeapons.Arms:
 			gameObject.SetActive(true);
+			decorative.SetActive(true);
+			animator.enabled = true;
 			primaryBullet = _ammolist[1];
-			Debug.Log(spriteRender.sprite);
-			Debug.Log(normalWeaponSprites[1]);
 			spriteRender.sprite = normalWeaponSprites[1];
 			speedBullet = 1f;
 			fireRate = 0f;
@@ -78,6 +83,7 @@ public class PrimaryWeapon : MonoBehaviour {
 			break;
 		case NormalWeapons.None:
 			gameObject.SetActive(false);
+			decorative.SetActive(false);
 			break;
 		}
 	}

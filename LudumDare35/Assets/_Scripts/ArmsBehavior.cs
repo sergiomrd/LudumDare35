@@ -9,17 +9,17 @@ public class ArmsBehavior : MonoBehaviour {
 	void Start () {
 
 		rb = GetComponent<Rigidbody2D>();
-		timer = 0.1f;
+		timer = 0.5f;
 
 	}
 
 	void Update () {
 
 		timer -= Time.deltaTime;
-		if(timer < 0.1f)
+		if(timer < 0.5f)
 		{
 			Destroy(gameObject);
-			timer = 0.1f;
+			timer = 0.5f;
 		}
 	
 	}

@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float speedMovement = 1f;
-	public GameObject hat, face;
+	public GameObject hat, face, decorative;
 	public float jumpPower = 150f;
 
 
@@ -98,6 +98,9 @@ public class PlayerController : MonoBehaviour {
 		//Flips the Face
 		face.GetComponent<SpriteRenderer>().flipX = (face.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
 		face.transform.localPosition = new Vector3(-face.transform.localPosition.x, face.transform.localPosition.y, face.transform.localPosition.z);
+
+		decorative.GetComponent<SpriteRenderer>().flipX = (decorative.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
+		decorative.transform.localPosition = new Vector3(-decorative.transform.localPosition.x, decorative.transform.localPosition.y, decorative.transform.localPosition.z);
 	}
 
 	public void FireWeapon()

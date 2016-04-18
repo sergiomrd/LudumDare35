@@ -75,7 +75,7 @@ public class BunnyBehavior : MonoBehaviour {
 
 	void StartTimerExplosion()
 	{
-		explosionTimer = 5f;
+		explosionTimer = 3f;
 		startTime = true;
 	}
 		

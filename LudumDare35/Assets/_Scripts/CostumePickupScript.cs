@@ -8,7 +8,8 @@ public class CostumePickupScript : MonoBehaviour {
 
 	private PrimaryWeapon primaryWeapon;
 	private SecondaryWeapon secondaryWeapon;
-	private int random;
+	public int random;
+	public int lastSelected;
 
 
 
@@ -16,11 +17,12 @@ public class CostumePickupScript : MonoBehaviour {
 	{
 		primaryWeapon = face.GetComponent<PrimaryWeapon>();
 		secondaryWeapon = hat.GetComponent<SecondaryWeapon>();
+		random = GameManagerScript.Instance.GetComponent<Randomize>().RandomInt;
+		lastSelected = GameManagerScript.Instance.GetComponent<Randomize>().LastSelected;
 
 	}
 
 	void Update () {
-	
 
 	}
 
@@ -37,8 +39,30 @@ public class CostumePickupScript : MonoBehaviour {
 	void SelectCostume()
 	{
 		random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
-		primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
-		Debug.Log(primaryWeapon.NormalWeaponList[1]);
+		GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+
+		if(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+		{
+			while(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+			{
+				random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
+				GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+			}
+
+			primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
+			lastSelected = random;
+			GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+
+		}
+		else 
+		{
+			
+			primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
+			lastSelected = random;
+			GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+		}
+			
+
 	}
 
 	void Test()

@@ -55,10 +55,9 @@ public class EnemyController : MonoBehaviour {
 	{
 		if(col.gameObject.CompareTag("Wall"))
 		{
-			
+
 			FlipEnemy();
 		}
-			
 
 	}
 
