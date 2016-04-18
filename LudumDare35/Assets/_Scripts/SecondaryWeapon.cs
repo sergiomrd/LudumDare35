@@ -1,20 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SecondaryWeapon : MonoBehaviour {
 
 	public enum SpecialWeapons  {
+		None,
 		Bunny,
-		None
+		Carrot
+
 	}
 
 	public SpecialWeapons currentWeapon;
-	private float fireRate;
 	private GameObject secondaryBullet;
+	private SpriteRenderer spriteRender;
 	private float speedBullet;
-	private float initialFireRate;
+	private int randomNumber;
+	private float fireRate, initialFireRate;
 	private bool canShoot;
+	private Animator animator;
 
 
 	[SerializeField]
@@ -22,6 +27,24 @@ public class SecondaryWeapon : MonoBehaviour {
 
 	[SerializeField]
 	private List<GameObject> _ammolist = new List<GameObject>();
+	private List<SpecialWeapons> specialWeaponList = System.Enum.GetValues(typeof(SpecialWeapons)).Cast<SpecialWeapons>().ToList();
+
+	[SerializeField]
+	private List<Sprite> specialWeaponSprites;
+
+	public List<SpecialWeapons> SpecialWeaponList {
+		get {
+			return specialWeaponList;
+		}
+	}
+
+	void Start()
+	{
+		spriteRender = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
+		CurrentWeapon(SpecialWeapons.None);
+		canShoot = true;
+	}
 
 	public void CurrentWeapon(SpecialWeapons current)
 	{
@@ -29,8 +52,25 @@ public class SecondaryWeapon : MonoBehaviour {
 
 		switch(current)
 		{
+
+		case SpecialWeapons.Carrot:
+		{
+			gameObject.SetActive(true);
+			gameObject.transform.localPosition = new Vector3(-0.023f, 0.005f, 0f);
+			gameObject.transform.localScale = new Vector3(1.16f,1.04354f);
+			animator.enabled = false;
+			secondaryBullet = _ammolist[1];
+			spriteRender.sprite = specialWeaponSprites[0];
+			speedBullet = 0f;
+			fireRate = 5f;
+			initialFireRate = fireRate;
+			break;
+		}
 		case SpecialWeapons.Bunny:
+			gameObject.SetActive(true);
+			gameObject.transform.localPosition = new Vector3(-0.01f, 0.204f, 0f);
 			secondaryBullet = _ammolist[0];
+			spriteRender.sprite = specialWeaponSprites[1];
 			speedBullet = 1f;
 			fireRate = 5f;
 			initialFireRate = fireRate;
@@ -41,12 +81,7 @@ public class SecondaryWeapon : MonoBehaviour {
 
 		}
 	}
-
-	void Start()
-	{
-		CurrentWeapon(currentWeapon);
-		canShoot = true;
-	}
+		
 
 	void Update()
 	{

@@ -64,10 +64,28 @@ public class AudioManagerScript : MonoBehaviour {
 		case "crow":
 			audioSourceSfx.clip = SoundEffects[4];
 			break;
+
+		case "carrot":
+			audioSourceMusic.Pause();
+			audioSourceSfx.clip = SoundEffects[5];
+			audioSourceSfx.loop = true;
+			break;
 		}
 
 		audioSourceSfx.Play();
 
 
+	}
+
+	public void StopLoop(string clip)
+	{
+		switch(clip.ToLower())
+		{
+		case "carrot":
+			audioSourceSfx.loop = false;
+			audioSourceMusic.Play();
+			break;
+		}
+		
 	}
 }
