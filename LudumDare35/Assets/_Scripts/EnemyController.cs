@@ -18,7 +18,14 @@ public class EnemyController : MonoBehaviour {
 	[SerializeField]
 	private float maxHealth;
 
+	[SerializeField]
 	private bool isFacingLeft;
+
+	public bool IsFacingLeft {
+		get {
+			return isFacingLeft;
+		}
+	}
 
 	public float CurrentHealth {
 		get {
@@ -44,7 +51,7 @@ public class EnemyController : MonoBehaviour {
 	
 		rb = GetComponent<Rigidbody2D>();
 		spriteRender = GetComponent<SpriteRenderer>();
-		isFacingLeft = true;
+		isFacingLeft = false;
 		FlipEnemy();
 		movement = new Vector2(-1,0);
 		enemyHealth = healthBar.GetComponent<HealthBar>();
@@ -94,15 +101,6 @@ public class EnemyController : MonoBehaviour {
 			FlipEnemy();
 		}
 
-	}
-
-	void OnTriggerEnter2D(Collider2D other)
-	{
-		if(other.gameObject.CompareTag("Bullet"))
-		{
-			Destroy(other.gameObject);
-			CurrentHealth -=  40;
-		}
 	}
 
 	void DeadEnemy()

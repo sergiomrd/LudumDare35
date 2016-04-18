@@ -4,21 +4,25 @@ using System.Collections.Generic;
 
 public class CostumePickupScript : MonoBehaviour {
 
-	public GameObject face, hat;
+	private GameObject face, hat, player;
 
 	private PrimaryWeapon primaryWeapon;
 	private SecondaryWeapon secondaryWeapon;
 	public int random;
 	public int lastSelected;
+	private GameObject spawner;
 
 
 
 	void Start()
 	{
+		player = GameObject.FindGameObjectWithTag("Player");
+		face = player.GetComponent<PlayerController>().Face;
+		hat = player.GetComponent<PlayerController>().Hat;
 		primaryWeapon = face.GetComponent<PrimaryWeapon>();
 		secondaryWeapon = hat.GetComponent<SecondaryWeapon>();
 		random = GameManagerScript.Instance.GetComponent<Randomize>().RandomInt;
-		lastSelected = GameManagerScript.Instance.GetComponent<Randomize>().LastSelected;
+		lastSelected = GameManagerScript.Instance.GetComponent<Randomize>().LastSelected; 
 
 	}
 
@@ -31,6 +35,7 @@ public class CostumePickupScript : MonoBehaviour {
 		if(col.gameObject.CompareTag("Player"))
 		{
 			SelectCostume();
+			spawner.GetComponent<PickupSpawnController>().SpawnStart();
 			Destroy(gameObject);
 
 		}
@@ -65,8 +70,8 @@ public class CostumePickupScript : MonoBehaviour {
 
 	}
 
-	void Test()
+	public void SetSpawner(GameObject spawner)
 	{
-		
+		this.spawner = spawner;
 	}
 }

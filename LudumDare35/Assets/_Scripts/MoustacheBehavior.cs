@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArmsBehavior : MonoBehaviour {
+public class MoustacheBehavior : MonoBehaviour {
+
 
 	public float damage;
+
 	private Rigidbody2D rb;
 	private float timer;
 
@@ -13,20 +15,21 @@ public class ArmsBehavior : MonoBehaviour {
 	void Start () {
 
 		rb = GetComponent<Rigidbody2D>();
-		timer = 0.5f;
-		damage = 60;
+		timer = 2f;
+		damage = 40;
 
 	}
 
 	void Update () {
-
+		
 		timer -= Time.deltaTime;
-		if(timer < 0.5f)
+		if(timer <= 0f)
 		{
 			Destroy(gameObject);
-			timer = 0.5f;
+			timer = 2f;
 		}
-	
+
+
 	}
 
 	void OnTriggerEnter2D(Collider2D other)

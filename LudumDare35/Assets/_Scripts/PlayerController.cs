@@ -7,9 +7,20 @@ public class PlayerController : MonoBehaviour {
 	public GameObject hat, face, decorative;
 	public float jumpPower = 150f;
 
+	public GameObject Hat {
+		get {
+			return hat;
+		}
+	}
+
+	public GameObject Face {
+		get {
+			return face;
+		}
+	}
 
 	private PrimaryWeapon primaryWeapon;
-	private GameObject healthBar;
+	public GameObject healthBar;
 	private HealthBar playerHealth;
 	private SecondaryWeapon secondaryWeapon;
 	private Rigidbody2D rb;
@@ -18,6 +29,32 @@ public class PlayerController : MonoBehaviour {
 	private bool isJumping;
 	private bool doubleJump;
 	private Animator faceAnimator;
+
+	[SerializeField]
+	private float currentHealth;
+
+	[SerializeField]
+	private float maxHealth;
+
+	public float CurrentHealth {
+		get {
+			return currentHealth;
+		}
+		set {
+			currentHealth = value;
+			playerHealth.Value = currentHealth;
+		}
+	}
+
+	public float MaxHealth {
+		get {
+			return maxHealth;
+		}
+		set {
+			maxHealth = value;
+			playerHealth.MaxValue = maxHealth;
+		}
+	}
 
 	void Start () {
 
@@ -30,6 +67,8 @@ public class PlayerController : MonoBehaviour {
 		doubleJump = false;
 		faceAnimator = face.GetComponent<Animator>();
 		playerHealth = healthBar.GetComponent<HealthBar>();
+		MaxHealth = 100;
+		CurrentHealth = MaxHealth;
 	}
 
 
@@ -61,6 +100,10 @@ public class PlayerController : MonoBehaviour {
 			FireHat();
 		}
 
+		if(CurrentHealth <= 0)
+		{
+			Dead();
+		}
 
 	}
 
@@ -149,5 +192,37 @@ public class PlayerController : MonoBehaviour {
 			isJumping = false;
 			doubleJump = true;
 		}
+
+		if(col.gameObject.CompareTag("Enemy"))
+		{
+			Debug.Log(col.gameObject.GetComponent<EnemyController>().IsFacingLeft);
+
+			if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
+			{
+				rb.AddForce(Vector2.left * jumpPower);
+				CurrentHealth -= 20;
+			}
+			else if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
+			{
+				rb.AddForce(Vector2.left * jumpPower);
+				CurrentHealth -= 20;
+			}
+			else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
+			{
+				rb.AddForce(Vector2.right * jumpPower);
+				CurrentHealth -= 20;
+			}
+			else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
+			{
+				rb.AddForce(Vector2.right * jumpPower);
+				CurrentHealth -= 20;
+			}
+				
+		}
+	}
+
+	void Dead()
+	{
+			
 	}
 }
