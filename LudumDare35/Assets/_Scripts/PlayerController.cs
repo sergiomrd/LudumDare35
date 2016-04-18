@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 	private bool isJumping;
 	private bool doubleJump;
 	private Animator faceAnimator;
+	private AudioSource audioSource;
 
 	[SerializeField]
 	private float currentHealth;
@@ -69,6 +70,7 @@ public class PlayerController : MonoBehaviour {
 		playerHealth = healthBar.GetComponent<HealthBar>();
 		MaxHealth = 100;
 		CurrentHealth = MaxHealth;
+		audioSource = GetComponent<AudioSource>();
 	}
 
 
@@ -93,6 +95,21 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetButtonDown("Fire1"))
 		{
 			FireWeapon();
+		}
+
+		if(Input.GetKey(KeyCode.LeftShift))
+		{
+			GameManagerScript.Instance.SlowMotion();
+
+		}
+		else
+		{
+			Time.timeScale = 1;
+		}
+
+		if(Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			AudioManagerScript.Instance.PlaySoundEffect("slowmo");
 		}
 
 		if(Input.GetButtonDown("Fire2"))
@@ -195,7 +212,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(col.gameObject.CompareTag("Enemy"))
 		{
-			Debug.Log(col.gameObject.GetComponent<EnemyController>().IsFacingLeft);
+
 
 			if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
 			{

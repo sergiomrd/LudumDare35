@@ -7,13 +7,19 @@ public class ArmsBehavior : MonoBehaviour {
 	private Rigidbody2D rb;
 	private float timer;
 
+	private AudioSource audioSource;
+
+
 	[SerializeField]
 	private GameObject enemy;
 
 	void Start () {
 
 		rb = GetComponent<Rigidbody2D>();
-		timer = 0.5f;
+		gameObject.GetComponent<SpriteRenderer>().sprite = null;
+		gameObject.GetComponent<Animator>().enabled = false;
+		audioSource = GetComponent<AudioSource>();
+		timer = 0.1f;
 		damage = 60;
 
 	}
@@ -21,10 +27,10 @@ public class ArmsBehavior : MonoBehaviour {
 	void Update () {
 
 		timer -= Time.deltaTime;
-		if(timer < 0.5f)
+		if(timer < 0f)
 		{
 			Destroy(gameObject);
-			timer = 0.5f;
+			timer = 0.1f;
 		}
 	
 	}
@@ -33,9 +39,10 @@ public class ArmsBehavior : MonoBehaviour {
 	{
 		if(other.gameObject.CompareTag("Enemy"))
 		{
-			Destroy(gameObject);
+			AudioManagerScript.Instance.PlaySoundEffect("punch");
 			enemy = other.gameObject;
 			enemy.GetComponent<EnemyController>().CurrentHealth -=  damage;
+			Destroy(gameObject);
 
 
 		}
@@ -45,9 +52,10 @@ public class ArmsBehavior : MonoBehaviour {
 	{
 		if(other.gameObject.CompareTag("Enemy"))
 		{
-			Destroy(gameObject);
+			AudioManagerScript.Instance.PlaySoundEffect("punch");
 			enemy = other.gameObject;
 			enemy.GetComponent<EnemyController>().CurrentHealth -=  damage;
+			Destroy(gameObject);
 
 		}
 	}

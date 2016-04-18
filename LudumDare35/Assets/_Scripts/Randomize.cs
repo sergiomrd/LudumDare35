@@ -29,5 +29,10 @@ public class Randomize : MonoBehaviour {
 		lastSelected = -1;
 		randomInt = -1;
 	}
+
+	public float RandomTime(float minValue, float maxValue)
+	{
+		return Random.Range(minValue, maxValue);
+	}
 		
 }

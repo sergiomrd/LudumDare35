@@ -24,6 +24,7 @@ public class BunnyBehavior : MonoBehaviour {
 		movement = Vector2.right;
 		startTime = false;
 		StartTimerExplosion();
+		AudioManagerScript.Instance.PlaySoundEffect("bunnystart");
 
 	}
 
@@ -66,6 +67,7 @@ public class BunnyBehavior : MonoBehaviour {
 
 		if(other.gameObject.CompareTag("Enemy"))
 		{
+				AudioManagerScript.Instance.PlaySoundEffect("bunnyend");
 				GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 				Destroy(other.gameObject);
 				Destroy(gameObject);
@@ -81,6 +83,7 @@ public class BunnyBehavior : MonoBehaviour {
 		
 	void BunnyExplode()
 	{
+		AudioManagerScript.Instance.PlaySoundEffect("bunnyend");
 		GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
 		Destroy(gameObject);
 	}

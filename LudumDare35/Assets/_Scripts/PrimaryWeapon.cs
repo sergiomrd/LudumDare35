@@ -77,7 +77,7 @@ public class PrimaryWeapon : MonoBehaviour {
 			animator.enabled = true;
 			primaryBullet = _ammolist[1];
 			spriteRender.sprite = normalWeaponSprites[1];
-			speedBullet = 1f;
+			speedBullet = 2f;
 			fireRate = 0f;
 			initialFireRate = fireRate;
 			break;
