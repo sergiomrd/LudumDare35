@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour {
 	private bool doubleJump;
 	private Animator faceAnimator;
 	private AudioSource audioSource;
+	private float timerDamage;
+	private bool recieveDamage;
 
 	[SerializeField]
 	private float currentHealth;
@@ -71,11 +73,20 @@ public class PlayerController : MonoBehaviour {
 		MaxHealth = 100;
 		CurrentHealth = MaxHealth;
 		audioSource = GetComponent<AudioSource>();
+		timerDamage = 2f;
 	}
 
 
 	void Update()
 	{
+		timerDamage -= Time.deltaTime;
+		if(timerDamage <= 0)
+		{
+			timerDamage = 2f;
+			recieveDamage = true;
+		}
+
+
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
 			if(isJumping == false)
@@ -212,34 +223,37 @@ public class PlayerController : MonoBehaviour {
 
 		if(col.gameObject.CompareTag("Enemy"))
 		{
+			if(recieveDamage)
+			{
+				recieveDamage = false;
+				if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
+				{
+					rb.AddForce(Vector2.left * jumpPower);
+					CurrentHealth -= 20;
+				}
+				else if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
+				{
+					rb.AddForce(Vector2.left * jumpPower);
+					CurrentHealth -= 20;
+				}
+				else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
+				{
+					rb.AddForce(Vector2.right * jumpPower);
+					CurrentHealth -= 20;
+				}
+				else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
+				{
+					rb.AddForce(Vector2.right * jumpPower);
+					CurrentHealth -= 20;
+				}
+			}
 
-
-			if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
-			{
-				rb.AddForce(Vector2.left * jumpPower);
-				CurrentHealth -= 20;
-			}
-			else if(col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
-			{
-				rb.AddForce(Vector2.left * jumpPower);
-				CurrentHealth -= 20;
-			}
-			else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && isFacingLeft)
-			{
-				rb.AddForce(Vector2.right * jumpPower);
-				CurrentHealth -= 20;
-			}
-			else if(!col.gameObject.GetComponent<EnemyController>().IsFacingLeft && !isFacingLeft)
-			{
-				rb.AddForce(Vector2.right * jumpPower);
-				CurrentHealth -= 20;
-			}
 				
 		}
 	}
 
 	void Dead()
 	{
-			
+		GameManagerScript.Instance.RestartGame();
 	}
 }

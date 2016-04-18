@@ -113,6 +113,7 @@ public class EnemyController : MonoBehaviour {
 
 	void DeadEnemy()
 	{
+		GameManagerScript.Instance.DumbKilled++;
 		Destroy(gameObject);
 	}
 

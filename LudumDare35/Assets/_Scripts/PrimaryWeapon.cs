@@ -95,6 +95,10 @@ public class PrimaryWeapon : MonoBehaviour {
 			canShoot = false;
 			GameObject bulletInstance = Instantiate(primaryBullet, facePos, Quaternion.identity) as GameObject;
 			bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x * speedBullet, shootDirection.y * speedBullet);
+			if(currentWeapon == NormalWeapons.Moustache)
+			{
+				AudioManagerScript.Instance.PlaySoundEffect("crow");
+			}
 		}
 
 	}

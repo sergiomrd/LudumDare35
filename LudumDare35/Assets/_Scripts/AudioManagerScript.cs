@@ -25,7 +25,7 @@ public class AudioManagerScript : MonoBehaviour {
 		else
 		{
 			Instance = this;
-			DontDestroyOnLoad(gameObject);
+
 		}
 
 	}
@@ -59,6 +59,10 @@ public class AudioManagerScript : MonoBehaviour {
 			break;
 		case "bunnyend":
 			audioSourceSfx.clip = SoundEffects[1];
+			break;
+
+		case "crow":
+			audioSourceSfx.clip = SoundEffects[4];
 			break;
 		}
 
