@@ -4,9 +4,14 @@ using System.Collections;
 public class EnemyController : MonoBehaviour {
 
 	public float speedMovement = 2f;
-	public GameObject Hat, Face;
 
+	public GameObject hat, face;
 	public GameObject healthBar;
+
+	[SerializeField]
+	private GameObject spawner;
+
+	[SerializeField]
 	private HealthBar enemyHealth;
 	private Rigidbody2D rb;
 	private SpriteRenderer spriteRender;
@@ -50,11 +55,9 @@ public class EnemyController : MonoBehaviour {
 	void Start () {
 	
 		rb = GetComponent<Rigidbody2D>();
-		spriteRender = GetComponent<SpriteRenderer>();
-		isFacingLeft = false;
-		FlipEnemy();
-		movement = new Vector2(-1,0);
-		enemyHealth = healthBar.GetComponent<HealthBar>();
+		hat = transform.FindChild("Hat").gameObject;
+		face = transform.FindChild("Face").gameObject;
+		enemyHealth = healthBar.gameObject.GetComponentInChildren<HealthBar>();
 		MaxHealth = 100;
 		currentHealth = MaxHealth;
 	}
@@ -82,21 +85,26 @@ public class EnemyController : MonoBehaviour {
 		movement *= -1;
 		//Flips the Hat
 
-		Hat.GetComponent<SpriteRenderer>().flipX = (Hat.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
-		Hat.transform.localRotation = Quaternion.Euler(new Vector3(Hat.transform.localEulerAngles.x, Hat.transform.localEulerAngles.y, -Hat.transform.localEulerAngles.z));
-		Hat.transform.localPosition = new Vector3(-Hat.transform.localPosition.x, Hat.transform.localPosition.y, Hat.transform.localPosition.z);
+		hat.GetComponent<SpriteRenderer>().flipX = (hat.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
+		hat.transform.localRotation = Quaternion.Euler(new Vector3(hat.transform.localEulerAngles.x, hat.transform.localEulerAngles.y, -hat.transform.localEulerAngles.z));
+		hat.transform.localPosition = new Vector3(-hat.transform.localPosition.x, hat.transform.localPosition.y, hat.transform.localPosition.z);
 
 		//Flips the player
+		spriteRender = GetComponent<SpriteRenderer>();
 		spriteRender.flipX = (spriteRender.flipX == false) ?  true : false;
 
 		//Flips the Face
-		Face.GetComponent<SpriteRenderer>().flipX = (Face.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
-		Face.transform.localPosition = new Vector3(-Face.transform.localPosition.x, Face.transform.localPosition.y, Face.transform.localPosition.z);
+		face.GetComponent<SpriteRenderer>().flipX = (face.GetComponent<SpriteRenderer>().flipX == false) ? true : false;
+		face.transform.localPosition = new Vector3(-face.transform.localPosition.x, face.transform.localPosition.y, face.transform.localPosition.z);
 	}
 		
 	void OnCollisionEnter2D(Collision2D col)
 	{
 		if(col.gameObject.CompareTag("Wall"))
+		{
+			FlipEnemy();
+		}
+		if(col.gameObject.CompareTag("Enemy"))
 		{
 			FlipEnemy();
 		}
@@ -106,5 +114,22 @@ public class EnemyController : MonoBehaviour {
 	void DeadEnemy()
 	{
 		Destroy(gameObject);
+	}
+
+	public void SetSpawner(GameObject spawner, bool facingLeft)
+	{
+		this.spawner = spawner;
+
+		if(facingLeft)
+		{
+			FlipEnemy();
+			movement = Vector2.left;
+
+		}
+		else
+		{
+			movement = Vector2.right;
+		
+		}
 	}
 }
