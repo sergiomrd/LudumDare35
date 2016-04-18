@@ -6,14 +6,39 @@ public class EnemyController : MonoBehaviour {
 	public float speedMovement = 2f;
 	public GameObject Hat, Face;
 
-
+	public GameObject healthBar;
+	private HealthBar enemyHealth;
 	private Rigidbody2D rb;
 	private SpriteRenderer spriteRender;
 	private Vector2 movement;
 
 	[SerializeField]
+	private float currentHealth;
+
+	[SerializeField]
+	private float maxHealth;
+
 	private bool isFacingLeft;
 
+	public float CurrentHealth {
+		get {
+			return currentHealth;
+		}
+		set {
+			currentHealth = value;
+			enemyHealth.Value = currentHealth;
+		}
+	}
+
+	public float MaxHealth {
+		get {
+			return maxHealth;
+		}
+		set {
+			maxHealth = value;
+			enemyHealth.MaxValue = maxHealth;
+		}
+	}
 
 	void Start () {
 	
@@ -22,6 +47,17 @@ public class EnemyController : MonoBehaviour {
 		isFacingLeft = true;
 		FlipEnemy();
 		movement = new Vector2(-1,0);
+		enemyHealth = healthBar.GetComponent<HealthBar>();
+		MaxHealth = 100;
+		currentHealth = MaxHealth;
+	}
+
+	void Update()
+	{
+		if(CurrentHealth <= 0)
+		{
+			DeadEnemy();
+		}
 	}
 	
 	// Update is called once per frame
@@ -55,7 +91,6 @@ public class EnemyController : MonoBehaviour {
 	{
 		if(col.gameObject.CompareTag("Wall"))
 		{
-
 			FlipEnemy();
 		}
 
@@ -66,7 +101,12 @@ public class EnemyController : MonoBehaviour {
 		if(other.gameObject.CompareTag("Bullet"))
 		{
 			Destroy(other.gameObject);
-			Destroy(gameObject);
+			CurrentHealth -=  40;
 		}
+	}
+
+	void DeadEnemy()
+	{
+		Destroy(gameObject);
 	}
 }

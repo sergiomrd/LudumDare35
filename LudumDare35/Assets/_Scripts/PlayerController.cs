@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
 
 
 	private PrimaryWeapon primaryWeapon;
+	private GameObject healthBar;
+	private HealthBar playerHealth;
 	private SecondaryWeapon secondaryWeapon;
 	private Rigidbody2D rb;
 	private bool isFacingLeft;
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 		isJumping = false;
 		doubleJump = false;
 		faceAnimator = face.GetComponent<Animator>();
+		playerHealth = healthBar.GetComponent<HealthBar>();
 	}
 
 

@@ -39,7 +39,7 @@ public class PrimaryWeapon : MonoBehaviour {
 	{
 		spriteRender = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
-		CurrentWeapon(NormalWeapons.None);
+		CurrentWeapon(NormalWeapons.Moustache);
 		canShoot = true;
 
 	}
