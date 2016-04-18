@@ -12,6 +12,9 @@ public class CostumePickupScript : MonoBehaviour {
 	public int lastSelected;
 	private GameObject spawner;
 
+	[SerializeField]
+	private int faceOrHat;
+
 
 
 	void Start()
@@ -43,29 +46,63 @@ public class CostumePickupScript : MonoBehaviour {
 
 	void SelectCostume()
 	{
-		random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
-		GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
-
-		if(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+		faceOrHat = Random.Range(0,2);
+		if(faceOrHat == 0)
 		{
-			while(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+			random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
+			GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+
+			if(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
 			{
-				random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
-				GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+				while(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+				{
+					random = Random.Range(1, primaryWeapon.NormalWeaponList.Count);
+					GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+				}
+
+				primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
+				lastSelected = random;
+				GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+
+			}
+			else 
+			{
+
+				primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
+				lastSelected = random;
+				GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
 			}
 
-			primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
-			lastSelected = random;
-			GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
-
 		}
-		else 
+		else
 		{
-			
-			primaryWeapon.CurrentWeapon(primaryWeapon.NormalWeaponList[random]);
-			lastSelected = random;
-			GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+			random = Random.Range(1, secondaryWeapon.SpecialWeaponList.Count);
+			GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+
+			if(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+			{
+				while(GameManagerScript.Instance.GetComponent<Randomize>().RandomInt == GameManagerScript.Instance.GetComponent<Randomize>().LastSelected)
+				{
+					random = Random.Range(1, secondaryWeapon.SpecialWeaponList.Count);
+					GameManagerScript.Instance.GetComponent<Randomize>().RandomInt = random;
+				}
+
+				secondaryWeapon.CurrentWeapon(secondaryWeapon.SpecialWeaponList[random]);
+				lastSelected = random;
+				GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+
+			}
+			else 
+			{
+
+				secondaryWeapon.CurrentWeapon(secondaryWeapon.SpecialWeaponList[random]);
+				lastSelected = random;
+				GameManagerScript.Instance.GetComponent<Randomize>().LastSelected = lastSelected;
+			}
 		}
+
+
+
 			
 
 	}

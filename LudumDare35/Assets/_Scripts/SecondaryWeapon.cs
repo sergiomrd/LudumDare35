@@ -14,12 +14,14 @@ public class SecondaryWeapon : MonoBehaviour {
 
 	public SpecialWeapons currentWeapon;
 	private GameObject secondaryBullet;
+	public GameObject player;
 	private SpriteRenderer spriteRender;
 	private float speedBullet;
 	private int randomNumber;
 	private float fireRate, initialFireRate;
 	private bool canShoot;
 	private Animator animator;
+	private bool hasChanged;
 
 
 	[SerializeField]
@@ -49,6 +51,7 @@ public class SecondaryWeapon : MonoBehaviour {
 	public void CurrentWeapon(SpecialWeapons current)
 	{
 		currentWeapon = current;
+		hasChanged = true;
 
 		switch(current)
 		{
@@ -68,7 +71,15 @@ public class SecondaryWeapon : MonoBehaviour {
 		}
 		case SpecialWeapons.Bunny:
 			gameObject.SetActive(true);
-			gameObject.transform.localPosition = new Vector3(-0.01f, 0.204f, 0f);
+			if(player.GetComponent<PlayerController>().IsFacingLeft)
+			{
+				gameObject.transform.localPosition = new Vector3(0.02f, 0.204f, 0f);
+			}
+			else
+			{
+				gameObject.transform.localPosition = new Vector3(-0.02f, 0.204f, 0f);
+			}
+
 			secondaryBullet = _ammolist[0];
 			spriteRender.sprite = specialWeaponSprites[1];
 			speedBullet = 1f;
@@ -89,7 +100,12 @@ public class SecondaryWeapon : MonoBehaviour {
 		if(fireRate <= 0)
 		{
 			canShoot = true;
+			hasChanged = false;
 			fireRate = initialFireRate;
+		}
+		if(hasChanged)
+		{
+			fireRate = 0;
 		}
 			
 	}
@@ -101,7 +117,7 @@ public class SecondaryWeapon : MonoBehaviour {
 			SetShootDirection(shootDirection);
 		}
 
-		if(canShoot)
+		if(canShoot && currentWeapon != SpecialWeapons.None)
 		{
 			canShoot = false;
 			GameObject bulletInstance = Instantiate(secondaryBullet, new Vector3((hatPos.x + minDistanceShooting),hatPos.y, hatPos.z), Quaternion.identity) as GameObject;

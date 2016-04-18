@@ -59,7 +59,6 @@ public class GameManagerScript : MonoBehaviour {
 	{
 		deadTimes++;
 		deadTimesText.text = "NUMBER OF AWESOME MOUSTACHES LOSED: " + deadTimes;
-		DumbKilled = 0;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
 	}

@@ -6,11 +6,12 @@ public class BunnyBehavior : MonoBehaviour {
 	public float speedMovement = 2f;
 	public GameObject explosion;
 	public float explosionTimer;
+	public int damage;
 
 	[SerializeField]
 	private bool isFacingLeft;
 
-
+	private GameObject enemy;
 	private Rigidbody2D rb;
 	private SpriteRenderer spriteRender;
 	private Vector2 movement;
@@ -25,6 +26,7 @@ public class BunnyBehavior : MonoBehaviour {
 		startTime = false;
 		StartTimerExplosion();
 		AudioManagerScript.Instance.PlaySoundEffect("bunnystart");
+		damage = 100;
 
 	}
 
@@ -67,9 +69,10 @@ public class BunnyBehavior : MonoBehaviour {
 
 		if(other.gameObject.CompareTag("Enemy"))
 		{
+				enemy = other.gameObject;
+				enemy.GetComponent<EnemyController>().CurrentHealth -=  damage;
 				AudioManagerScript.Instance.PlaySoundEffect("bunnyend");
 				GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
-				Destroy(other.gameObject);
 				Destroy(gameObject);
 		}
 	

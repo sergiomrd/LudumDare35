@@ -4,8 +4,9 @@ using System.Collections;
 public class CarrotBehavior : MonoBehaviour {
 
 	public GameObject explosion;
+	public int damage = 100;
 
-
+	private GameObject enemy;
 	private Rigidbody2D rb;
 	private SpriteRenderer spriteRender;
 
@@ -15,6 +16,7 @@ public class CarrotBehavior : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D>();
 		spriteRender = GetComponent<SpriteRenderer>();
 		AudioManagerScript.Instance.PlaySoundEffect("carrot");
+		damage = 100;
 
 	}
 
@@ -23,10 +25,11 @@ public class CarrotBehavior : MonoBehaviour {
 
 		if(other.gameObject.CompareTag("Enemy"))
 		{
+			enemy = other.gameObject;
+			enemy.GetComponent<EnemyController>().CurrentHealth -=  damage;
 			AudioManagerScript.Instance.StopLoop("carrot");
 			AudioManagerScript.Instance.PlaySoundEffect("bunnyend");
 			GameObject bunnyExplosion = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
-			Destroy(other.gameObject);
 			Destroy(gameObject);
 		}
 

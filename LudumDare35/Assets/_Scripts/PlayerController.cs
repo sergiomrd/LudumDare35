@@ -33,6 +33,12 @@ public class PlayerController : MonoBehaviour {
 	private float timerDamage;
 	private bool recieveDamage;
 
+	public bool IsFacingLeft {
+		get {
+			return isFacingLeft;
+		}
+	}
+
 	[SerializeField]
 	private float currentHealth;
 
